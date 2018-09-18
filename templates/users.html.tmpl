@@ -1,0 +1,18 @@
+<html>
+<head></head>
+<body>
+<form method="post" action="/user/add">
+    <input name="name"/>
+    <input name="score"/>
+    <input type="submit"/>
+</form>
+
+{{len .}} users
+
+<ul>
+{{range .}}
+    <li>{{.Name}} : {{.Score}}</li>
+{{end}}
+</ul>
+</body>
+</html>
