@@ -13,7 +13,7 @@ type user struct {
 }
 
 func main() {
-	game := initGame()
+	gameChan := initGame()
 
 	var usersMap = make(map[string]user)
 	usersMap["toto"] = user{"toto", 1337}
@@ -36,12 +36,7 @@ func main() {
 	})
 
 	r.GET("/game", func(c *gin.Context) {
-		response := make(chan string)
-		game <- func(movie string) {
-			response <- movie
-		}
-		movie := <-response
-		c.HTML(200, "game.html.tmpl", movie)
+		c.HTML(200, "game.html.tmpl", GetCurrentMovie(gameChan))
 	})
 
 	//r.GET("/ping", func(c *gin.Context) {
