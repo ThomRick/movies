@@ -2,10 +2,18 @@ package main
 
 import "time"
 
-func initGame() chan func(string) {
+type game struct {
+	currentMovie chan func(string)
+	players      chan func(string)
+}
+
+func InitGame() game {
 	movies := []string{"movie 1", "movie 2", "movie 3"}
 
-	gameChan := make(chan func(string))
+	currentMovie := make(chan func(string))
+	players := make(chan func(string))
+
+	game := game{currentMovie, players}
 
 	go func() {
 		incrementMovie := time.Tick(5 * time.Second)
@@ -18,21 +26,21 @@ func initGame() chan func(string) {
 				if len(movies) == currentMovieIndex {
 					currentMovieIndex = 0
 				}
-			case task := <-gameChan:
+			case task := <-currentMovie:
 				task(movies[currentMovieIndex])
 			}
 		}
 	}()
 
-	return gameChan
+	return game
 }
 
-func GetCurrentMovie(game chan func(string)) string {
-	currentMovieChan := make(chan string)
-	game <- func(movie string) {
-		currentMovieChan <- movie
+func GetCurrentMovie(game game) string {
+	currentMovie := make(chan string)
+	game.currentMovie <- func(movie string) {
+		currentMovie <- movie
 	}
-	movie := <-currentMovieChan
-	close(currentMovieChan)
+	movie := <-currentMovie
+	close(currentMovie)
 	return movie
 }
