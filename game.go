@@ -5,7 +5,7 @@ import "time"
 type game struct {
 	currentMovie chan func(string)
 	NewPlayer    chan func() string
-	GetPlayers   chan func(map[string]player)
+	GetPlayers   chan func([]player)
 }
 
 type player struct {
@@ -20,7 +20,7 @@ func InitGame() game {
 
 	currentMovie := make(chan func(string))
 	newPlayer := make(chan func() string)
-	getPlayers := make(chan func(map[string]player))
+	getPlayers := make(chan func([]player))
 	game := game{currentMovie, newPlayer, getPlayers}
 
 	go func() {
@@ -40,7 +40,11 @@ func InitGame() game {
 				playerName := task()
 				playerMap[playerName] = player{playerName, 0}
 			case task := <-getPlayers:
-				task(playerMap)
+				playerList := make([]player, len(playerMap))
+				for k:= range playerMap {
+					playerList = append(playerList, playerMap[k])
+				}
+				task(playerList)
 			}
 		}
 	}()
@@ -64,9 +68,9 @@ func NewPlayer(game game, playerName string) {
 	}
 }
 
-func GetPlayers(game game) map[string]player {
-	getPlayers := make(chan map[string]player)
-	game.GetPlayers <- func(players map[string]player) {
+func GetPlayers(game game) []player {
+	getPlayers := make(chan []player)
+	game.GetPlayers <- func(players []player) {
 		getPlayers <- players
 	}
 	players := <-getPlayers
