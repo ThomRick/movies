@@ -1,6 +1,10 @@
 package main
 
-import "time"
+import (
+	"fmt"
+	"strings"
+	"time"
+)
 
 const MovieDuration = 5000
 
@@ -8,11 +12,12 @@ type game struct {
 	currentMovie chan func(string, int64)
 	NewPlayer    chan func() string
 	GetPlayers   chan func([]player)
+	GuessTitle   chan func(map[string]player, string)
 }
 
 type player struct {
 	Name  string
-	Score int
+	Score *int
 }
 
 type movie struct {
@@ -28,7 +33,8 @@ func InitGame() game {
 	currentMovie := make(chan func(string, int64))
 	newPlayer := make(chan func() string)
 	getPlayers := make(chan func([]player))
-	game := game{currentMovie, newPlayer, getPlayers}
+	guessTitle := make(chan func(map[string]player, string))
+	game := game{currentMovie, newPlayer, getPlayers, guessTitle}
 
 	go func() {
 		incrementMovie := time.Tick(MovieDuration * time.Millisecond)
@@ -48,13 +54,15 @@ func InitGame() game {
 				task(movies[currentMovieIndex], timeToNextMovie)
 			case task := <-newPlayer:
 				playerName := task()
-				playerMap[playerName] = player{playerName, 0}
+				playerMap[playerName] = player{playerName, new(int)}
 			case task := <-getPlayers:
 				playerList := make([]player, len(playerMap))
 				for k := range playerMap {
 					playerList = append(playerList, playerMap[k])
 				}
 				task(playerList)
+			case task := <-guessTitle:
+				task(playerMap, movies[currentMovieIndex])
 			}
 		}
 	}()
@@ -86,4 +94,21 @@ func GetPlayers(game game) []player {
 	players := <-getPlayers
 	close(getPlayers)
 	return players
+}
+
+func GuessTitle(game game, playerName string, titleName string) string {
+	guessTitle := make(chan string)
+	game.GuessTitle <- func(playerMap map[string]player, currentMovieTitle string) {
+		p := playerMap[playerName]
+		fmt.Printf("%s %s\n", currentMovieTitle, titleName)
+		if strings.EqualFold(currentMovieTitle, titleName) {
+			*(p.Score) = *(p.Score) + 1
+			guessTitle <- "ok"
+		} else {
+			guessTitle <- "ko"
+		}
+	}
+	message := <-guessTitle
+	close(guessTitle)
+	return message
 }

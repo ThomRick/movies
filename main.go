@@ -38,6 +38,12 @@ func main() {
 		c.JSON(200, gin.H{"players": GetPlayers(game)})
 	})
 
+	r.POST("/game/answer", func(c *gin.Context) {
+		titleName := c.PostForm("title")
+		playerName, _ := c.Cookie(authCookieName)
+		c.JSON(200, gin.H{"message": GuessTitle(game, playerName, titleName)})
+	})
+
 	r.Static("/static", "static")
 
 	r.Run() // listen and serve on 0.0.0.0:8080
