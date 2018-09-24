@@ -2,8 +2,10 @@ package main
 
 import "time"
 
+const MovieDuration = 5000
+
 type game struct {
-	currentMovie chan func(string)
+	currentMovie chan func(string, int64)
 	NewPlayer    chan func() string
 	GetPlayers   chan func([]player)
 }
@@ -13,35 +15,43 @@ type player struct {
 	Score int
 }
 
+type movie struct {
+	Title         string
+	MsToNextMovie int64
+}
+
 func InitGame() game {
 
 	movies := []string{"movie 1", "movie 2", "movie 3"}
 	playerMap := make(map[string]player)
 
-	currentMovie := make(chan func(string))
+	currentMovie := make(chan func(string, int64))
 	newPlayer := make(chan func() string)
 	getPlayers := make(chan func([]player))
 	game := game{currentMovie, newPlayer, getPlayers}
 
 	go func() {
-		incrementMovie := time.Tick(5 * time.Second)
+		incrementMovie := time.Tick(MovieDuration * time.Millisecond)
+		currentMovieStartTime := time.Now()
 		currentMovieIndex := 0
 
 		for {
 			select {
 			case <-incrementMovie:
+				currentMovieStartTime = time.Now()
 				currentMovieIndex++
 				if len(movies) == currentMovieIndex {
 					currentMovieIndex = 0
 				}
 			case task := <-currentMovie:
-				task(movies[currentMovieIndex])
+				timeToNextMovie := MovieDuration - time.Now().Sub(currentMovieStartTime).Nanoseconds()/int64(time.Millisecond)
+				task(movies[currentMovieIndex], timeToNextMovie)
 			case task := <-newPlayer:
 				playerName := task()
 				playerMap[playerName] = player{playerName, 0}
 			case task := <-getPlayers:
 				playerList := make([]player, len(playerMap))
-				for k:= range playerMap {
+				for k := range playerMap {
 					playerList = append(playerList, playerMap[k])
 				}
 				task(playerList)
@@ -52,10 +62,10 @@ func InitGame() game {
 	return game
 }
 
-func GetCurrentMovie(game game) string {
-	currentMovie := make(chan string)
-	game.currentMovie <- func(movie string) {
-		currentMovie <- movie
+func GetCurrentMovie(game game) movie {
+	currentMovie := make(chan movie)
+	game.currentMovie <- func(movieName string, timeToNextMovie int64) {
+		currentMovie <- movie{movieName, timeToNextMovie}
 	}
 	movie := <-currentMovie
 	close(currentMovie)
