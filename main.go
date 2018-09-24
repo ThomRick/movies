@@ -2,21 +2,12 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"strconv"
 )
 
-const s = "authorization"
-
-type user struct {
-	Name  string
-	Score int
-}
+const authCookieName = "authorization"
 
 func main() {
 	game := InitGame()
-
-	var usersMap = make(map[string]user)
-	usersMap["toto"] = user{"toto", 1337}
 
 	r := gin.Default()
 	r.LoadHTMLGlob("templates/*.tmpl")
@@ -28,9 +19,9 @@ func main() {
 	})
 
 	r.POST("/login", func(c *gin.Context) {
-		name := c.PostForm("name")
-		usersMap[name] = user{name, 0}
-		c.SetCookie(s, name, 0, "/", "", false, true)
+		playerName := c.PostForm("name")
+		NewPlayer(game, playerName)
+		c.SetCookie(authCookieName, playerName, 0, "/", "", false, true)
 
 		c.Redirect(302, "/game")
 	})
@@ -43,33 +34,8 @@ func main() {
 		c.JSON(200, gin.H{"movie": GetCurrentMovie(game)})
 	})
 
-	//r.GET("/ping", func(c *gin.Context) {
-	//	c.JSON(200, gin.H{
-	//		"message": "pong",
-	//	})
-	//})
-
-	r.GET("/user", func(c *gin.Context) {
-		name := c.Query("name")
-		c.HTML(200, "user.html.tmpl", usersMap[name])
-	})
-
-	r.POST("/user/add", func(c *gin.Context) {
-		name := c.PostForm("name")
-		score, err := strconv.Atoi(c.PostForm("score"))
-		if err != nil {
-			c.Error(err)
-			return
-		}
-
-		println("%s %i", name, score)
-
-		usersMap[name] = user{name, score}
-		c.Redirect(302, "/users")
-	})
-
-	r.GET("/users", func(c *gin.Context) {
-		c.HTML(200, "users.html.tmpl", usersMap)
+	r.GET("/game/players", func(c *gin.Context) {
+		c.JSON(200, gin.H{"players": GetPlayers(game)})
 	})
 
 	r.Static("/static", "static")
@@ -79,7 +45,7 @@ func main() {
 
 func middleware() func(c *gin.Context) {
 	return func(c *gin.Context) {
-		cookie, _ := c.Cookie(s)
+		cookie, _ := c.Cookie(authCookieName)
 		if cookie == "" && c.Request.URL.Path != "/login" {
 			c.Redirect(302, "/login")
 			return

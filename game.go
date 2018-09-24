@@ -4,16 +4,24 @@ import "time"
 
 type game struct {
 	currentMovie chan func(string)
-	players      chan func(string)
+	NewPlayer    chan func() string
+	GetPlayers   chan func(map[string]player)
+}
+
+type player struct {
+	Name  string
+	Score int
 }
 
 func InitGame() game {
+
 	movies := []string{"movie 1", "movie 2", "movie 3"}
+	playerMap := make(map[string]player)
 
 	currentMovie := make(chan func(string))
-	players := make(chan func(string))
-
-	game := game{currentMovie, players}
+	newPlayer := make(chan func() string)
+	getPlayers := make(chan func(map[string]player))
+	game := game{currentMovie, newPlayer, getPlayers}
 
 	go func() {
 		incrementMovie := time.Tick(5 * time.Second)
@@ -28,6 +36,11 @@ func InitGame() game {
 				}
 			case task := <-currentMovie:
 				task(movies[currentMovieIndex])
+			case task := <-newPlayer:
+				playerName := task()
+				playerMap[playerName] = player{playerName, 0}
+			case task := <-getPlayers:
+				task(playerMap)
 			}
 		}
 	}()
@@ -43,4 +56,20 @@ func GetCurrentMovie(game game) string {
 	movie := <-currentMovie
 	close(currentMovie)
 	return movie
+}
+
+func NewPlayer(game game, playerName string) {
+	game.NewPlayer <- func() string {
+		return playerName
+	}
+}
+
+func GetPlayers(game game) map[string]player {
+	getPlayers := make(chan map[string]player)
+	game.GetPlayers <- func(players map[string]player) {
+		getPlayers <- players
+	}
+	players := <-getPlayers
+	close(getPlayers)
+	return players
 }
