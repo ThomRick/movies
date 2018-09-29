@@ -30,7 +30,7 @@ export class AppComponent extends Component {
   render() {
     return (
       <div className="app">
-        <header>
+        <header className="menu">
           <nav>
             <h1>Movies</h1>
             <div className="sign">
@@ -39,7 +39,7 @@ export class AppComponent extends Component {
             </div>
           </nav>
         </header>
-        <main>
+        <main className="content">
           {
             this.state.isSignUpDialogOpen ?
             <div className="dialog">

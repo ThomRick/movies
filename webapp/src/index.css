@@ -2,6 +2,9 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   font-weight: bold;
+  font-family: 'Cinzel', serif;
+  color: rgba(255, 255, 255, 0.8);
+  font-size: 14px;
 }
 
 html,

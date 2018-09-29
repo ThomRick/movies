@@ -5,7 +5,15 @@
   flex-direction: column;
 }
 
-.app header nav {
+/* Menu Styles */
+.app header.menu {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 255, 0.9), rgba(0, 0, 0, 0.8));
+}
+
+.app header.menu nav {
   box-sizing: border-box;
   width: 100%;
   padding-left: 25%;
@@ -14,21 +22,20 @@
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid black; 
 }
 
-.app header nav h1 {
+.app header.menu nav h1 {
   width: 100%;
 }
 
-.app header nav .sign {
+.app header.menu nav .sign {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
 }
 
-.app header nav .sign button {
+.app header.menu nav .sign button {
   height: 36px;
   outline: none;
   width: 100px;
@@ -36,36 +43,65 @@
   
 }
 
-.app header nav .sign button.primary {
+.app header.menu nav .sign button.primary {
   border-radius: 4px;
-  background-color: rgb(255, 94, 0);
+  background-color: rgba(95, 35, 0, 1);
   border: none;
 }
 
-.app header nav .sign button.primary:hover {
-  background-color: rgb(247, 144, 85);
+.app header.menu nav .sign button.primary:hover {
+  background-color: rgb(95, 35, 0, 0.7);
   cursor: pointer;
 }
 
-.app header nav .sign button.secondary {
+.app header.menu nav .sign button.secondary {
   border: none;
   background-color: transparent;
 }
 
-.app header nav .sign button.secondary:hover {
+.app header.menu nav .sign button.secondary:hover {
   text-decoration: underline;
   cursor: pointer;
 }
 
-.app main {
+/* Main content Styles */
+@keyframes carousel {
+  0% {
+    background: url('/images/backgrounds/back-1.jpg') no-repeat;
+    background-size: cover;
+  }
+  25% {
+    background: url('/images/backgrounds/back-2.jpg') no-repeat;
+    background-size: cover;
+  }
+  50% {
+    background: url('/images/backgrounds/back-3.jpg') no-repeat;
+    background-size: cover;
+  }
+  75% {
+    background: url('/images/backgrounds/back-4.jpg') no-repeat;
+    background-size: cover;
+  }
+  100% {
+    background: url('/images/backgrounds/back-5.jpg') no-repeat;
+    background-size: cover;
+  }
+}
+
+.app main.content {
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  animation-name: carousel;
+  animation-duration: 20s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
 }
 
+/* Dialog Styles */ 
 .dialog {
   width: 100%;
   height: 100%;
@@ -89,7 +125,7 @@
   align-items: center;
   border: 1px solid black;
   border-radius: 10px;
-  background-color: white;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 255, 0.5), rgba(0, 0, 0, 0.7));
 }
 
 .dialog main form {
@@ -118,9 +154,10 @@
   height: 36px;
   margin: 5px;
   border-radius: 4px;
-  border: 1px solid black;
+  border: 1px solid rgb(0, 0, 0);
   padding-left: 10px;
   outline: none;
+  color: rgb(0, 0, 0);
 }
 
 .dialog main form .row input:hover {
@@ -141,6 +178,7 @@
   height: 36px;
   border-radius: 4px;
   outline: none;
+  color: rgb(0, 0, 0);
 }
 
 .dialog main form button:hover {
