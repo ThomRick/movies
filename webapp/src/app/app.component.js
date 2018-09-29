@@ -34,8 +34,8 @@ export class AppComponent extends Component {
           <nav>
             <h1>Movies</h1>
             <div className="sign">
-              <button onClick={ this._handleOnSignUp }>Inscription</button>
-              <button onClick={ this._handleOnSignIn }>Connexion</button>
+              <button className="secondary" onClick={ this._handleOnSignUp }>Inscription</button>
+              <button className="primary" onClick={ this._handleOnSignIn }>Connexion</button>
             </div>
           </nav>
         </header>

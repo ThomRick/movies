@@ -28,8 +28,33 @@
   justify-content: space-around;
 }
 
-.app header nav .sign a {
+.app header nav .sign button {
+  height: 36px;
+  outline: none;
+  width: 100px;
   margin: 5px;
+  
+}
+
+.app header nav .sign button.primary {
+  border-radius: 4px;
+  background-color: rgb(255, 94, 0);
+  border: none;
+}
+
+.app header nav .sign button.primary:hover {
+  background-color: rgb(247, 144, 85);
+  cursor: pointer;
+}
+
+.app header nav .sign button.secondary {
+  border: none;
+  background-color: transparent;
+}
+
+.app header nav .sign button.secondary:hover {
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .app main {
@@ -98,6 +123,10 @@
   outline: none;
 }
 
+.dialog main form .row input:hover {
+  cursor: pointer;
+}
+
 .dialog main form .actions {
   width: 100%;
   display: flex;
@@ -112,4 +141,8 @@
   height: 36px;
   border-radius: 4px;
   outline: none;
+}
+
+.dialog main form button:hover {
+  cursor: pointer;
 }
