@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { GoogleLogin } from 'react-google-login';
 import './app.component.css';
 
 export class AppComponent extends Component {
@@ -27,6 +28,10 @@ export class AppComponent extends Component {
     this.setState({ isSignInDialogOpen: false });
   }
 
+  _handleGoogleSignUpResponse = (response) => {
+    console.log(response);
+  }
+
   render() {
     return (
       <div className="app">
@@ -48,8 +53,15 @@ export class AppComponent extends Component {
                   <h2>Inscription</h2>
                 </header>
                 <main>
-                  <div>
+                  <div className="sign-social">
+                    <GoogleLogin
+                      clientId="857123691814-2gmks9c09okm1mk86nachs1vbpbk33nr.apps.googleusercontent.com"
+                      onSuccess={ this._handleGoogleSignUpResponse }
+                      onFailure={ this._handleGoogleSignUpResponse }
+                      buttonText="Se connecter avec google"
+                    >
 
+                    </GoogleLogin>
                   </div>
                   <form onSubmit={ this._handlOnSignUpDialogClosed }>
                     <p>ou utiliser une inscription classique</p>
