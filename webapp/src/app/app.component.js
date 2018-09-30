@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { GoogleLogin } from 'react-google-login';
 import './app.component.css';
+import { BrowserRouter } from 'react-router-dom';
+import { AppRoutes } from './app.routes';
 
 export class AppComponent extends Component {
   state = {
@@ -114,17 +116,19 @@ export class AppComponent extends Component {
 
   render() {
     return (
-      <div className="app">
-        <header className="menu">
-          <nav>
-            <h1>Movies</h1>
-            <div className="sign">
-              <button className="secondary" onClick={ this._handleOnSignUp }>Inscription</button>
-              <button className="primary" onClick={ this._handleOnSignIn }>Connexion</button>
-            </div>
-          </nav>
-        </header>
-        <main className="content">
+      <BrowserRouter>
+        <div className="app">
+          <header className="menu">
+            <nav>
+              <h1>Movies</h1>
+              <div className="sign">
+                <button className="secondary" onClick={ this._handleOnSignUp }>Inscription</button>
+                <button className="primary" onClick={ this._handleOnSignIn }>Connexion</button>
+              </div>
+            </nav>
+          </header>
+          <AppRoutes />
+          <footer></footer>
           {
             this.state.isSignUpDialogOpen ?
             <div className="dialog">
@@ -231,11 +235,8 @@ export class AppComponent extends Component {
             :
             null
           }
-        </main>
-        <footer>
-          
-        </footer>
-      </div>
+        </div>
+      </BrowserRouter>
     );
   }
 }

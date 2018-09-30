@@ -1,0 +1,25 @@
+.home {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.home a {
+  height: 50px;
+  width: 150px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4px;
+  text-decoration: none;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 255, 0.8), rgba(0, 0, 0, 0.7));
+}
+
+.home a:hover {
+  background-color: rgba(0, 0, 255, 1);
+  cursor: pointer;
+}

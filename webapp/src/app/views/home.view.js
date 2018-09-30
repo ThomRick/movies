@@ -1,7 +1,13 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
+import './home.view.css';
 
-export const HomeView = () => (
-  <div>
-    <h1>Inside Home View</h1>
-  </div>
-);
+export class HomeView extends Component {
+  render() {
+    return (
+      <div className="home">
+        <Link to="/game">Jouer</Link>
+      </div>
+    )
+  }
+}
