@@ -2,6 +2,10 @@ $(function () {
     var displayCurrentMovieName = function () {
         $.getJSON("game/current-movie", function (data) {
             $("#movie").text(data.movie.Title + " " + data.movie.MsToNextMovie + "ms");
+            $("#video-player-source").attr("src", "static/movies/" + data.movie.File);
+            var videoElement = $("#video-player")[0];
+            videoElement.load();
+            videoElement.play();
             setTimeout(function () {
                 displayCurrentMovieName();
             }, data.movie.MsToNextMovie)
