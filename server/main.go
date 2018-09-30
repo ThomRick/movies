@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/mouminoux/movies/game"
+	"github.com/mouminoux/movies/server/game"
 )
 
 const authCookieName = "authorization"
@@ -14,6 +14,10 @@ func main() {
 	r.LoadHTMLGlob("templates/*.tmpl")
 
 	r.Use(middleware())
+
+	r.GET("/", func(c *gin.Context) {
+		c.Redirect(302, "/login")
+	})
 
 	r.GET("/login", func(c *gin.Context) {
 		c.HTML(200, "login.html.tmpl", nil)
