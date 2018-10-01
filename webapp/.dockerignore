@@ -1,0 +1,9 @@
+.git
+
+.dockerignore
+Dockerfile
+
+node_modules
+README.md
+
+public/test-video.mp4

@@ -1,0 +1,243 @@
+.app {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Menu Styles */
+.app header.menu {
+  width: 100%;
+  min-height: 60px;
+  display: flex;
+  flex-direction: row;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.8), rgba(0, 0, 255, 0.9), rgba(0, 0, 0, 0.8));
+}
+
+.app header.menu nav {
+  box-sizing: border-box;
+  width: 100%;
+  padding-left: 25%;
+  padding-right: 25%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.app header.menu nav h1 {
+  width: 100%;
+}
+
+.app header.menu nav .sign {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.app header.menu nav .sign button {
+  height: 36px;
+  outline: none;
+  width: 100px;
+  margin: 5px;
+  
+}
+
+.app header.menu nav .sign button.primary {
+  border-radius: 4px;
+  background-color: rgba(95, 35, 0, 1);
+  border: none;
+}
+
+.app header.menu nav .sign button.primary:hover {
+  background-color: rgb(95, 35, 0, 0.7);
+  cursor: pointer;
+}
+
+.app header.menu nav .sign button.secondary {
+  border: none;
+  background-color: transparent;
+}
+
+.app header.menu nav .sign button.secondary:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Main content Styles */
+@keyframes carousel {
+  0% {
+    background: url('/images/backgrounds/back-1.jpg') no-repeat;
+    background-size: cover;
+  }
+  25% {
+    background: url('/images/backgrounds/back-2.jpg') no-repeat;
+    background-size: cover;
+  }
+  50% {
+    background: url('/images/backgrounds/back-3.jpg') no-repeat;
+    background-size: cover;
+  }
+  75% {
+    background: url('/images/backgrounds/back-4.jpg') no-repeat;
+    background-size: cover;
+  }
+  100% {
+    background: url('/images/backgrounds/back-5.jpg') no-repeat;
+    background-size: cover;
+  }
+}
+
+.app main.content {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  animation-name: carousel;
+  animation-duration: 20s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: ease-in-out;
+}
+
+/* Dialog Styles */ 
+.dialog {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.dialog .background {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(128, 128, 128, 0.6);
+  z-index: 1;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.dialog .content {
+  z-index: 2;
+  max-width: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid black;
+  border-radius: 10px;
+  background-image: linear-gradient(to right, rgba(0, 0, 0, 0.7), rgba(0, 0, 255, 0.5), rgba(0, 0, 0, 0.7));
+}
+
+.dialog main .sign-social {
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 35px 35px 0 35px;
+}
+
+.dialog main .sign-social button {
+  width: 100% !important;
+  font-family: 'Cinzel', serif !important;
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  position: relative;
+  background-color: rgba(205, 32, 31, 1) !important;
+  height: 45px !important;
+  text-align: right;
+  padding-right: 20px;
+  outline: none;
+}
+
+.dialog main .sign-social button:hover {
+  background-color: rgba(205, 32, 31, 0.8) !important;
+  cursor: pointer;
+}
+
+.dialog main .sign-social button::before {
+  content: "G";
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 40px;
+  text-align: center;
+  line-height: 50px;
+  background: rgba(255, 255, 255, 0.15);
+  font-size: 1.2rem;
+}
+
+.dialog main form {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 35px;
+}
+
+.dialog main form .row {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.dialog main form .row input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 36px;
+  margin: 5px;
+  border-radius: 4px;
+  border: 1px solid rgb(0, 0, 0);
+  padding-left: 10px;
+  outline: none;
+  color: rgb(0, 0, 0);
+}
+
+/* .dialog main form .row input:hover {
+  cursor: pointer;
+} */
+
+.dialog main form .actions {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin: 10px;
+}
+
+.dialog main form button {
+  width: 40%;
+  height: 36px;
+  border-radius: 4px;
+  outline: none;
+  color: rgb(0, 0, 0);
+}
+
+.dialog main form button:hover {
+  cursor: pointer;
+}
